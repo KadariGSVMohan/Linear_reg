@@ -1,22 +1,23 @@
 import streamlit as st
-import sklearn
 import pickle
+import numpy as np
 
-model = pickle.load(open("model.pkl", "rb"))
+# Load the trained model
+try:
+    model = pickle.load(open("model.pkl", "rb"))
+except FileNotFoundError:
+    st.error("Model file not found. Please check the file path and try again.")
+    st.stop()
 
-st.title("Predect your Salary")
-st.markdown(
-    "The dataset contains modifications with regards to the original for illustrative & learning purposes"
-)
+# App Title
+st.title("Salary Prediction App")
+st.markdown("This application predicts salary based on years of experience.")
 
-amenities = st.slider('How many Years Of Experience you have?', 0, 50, 20)
-#accommodates = st.slider('How many people does the listing accommodate?', 1, 16, 2)
-#instant_bookable = st.radio(
-    #"Is the listing instantly bookable?",
-    #("True", "False"))
-#instant_bookable = 1 if instant_bookable == "True" else 0
+# User Input
+experience = st.number_input('Enter Your Years of Experience:', min_value=0, max_value=50, step=1)
+user_input = np.array([[experience]])
 
-user_input = [[amenities]]#, accommodates, instant_bookable]]
-
-if st.button('Predict?'):
-    st.write("The model predicts that the average tip for this listing is:", model.predict(user_input).round(2))
+# Prediction
+if st.button('Predict Salary'):
+    prediction = model.predict(user_input).round(2)
+    st.success(f"Predicted Salary: ${prediction[0]:,.2f}")
