@@ -20,4 +20,4 @@ user_input = np.array([[experience]])
 # Prediction
 if st.button('Predict Salary'):
     prediction = model.predict(user_input).round(2)
-    st.success(f"Predicted Salary: ${prediction[0]:,.2f}")
+    st.success(f"Predicted Salary: ₹{prediction[0]:,.2f}")
